@@ -17,7 +17,7 @@ const promiseReadFile = (filename) => {
 const server = http.createServer((req, res) => {
     switch (req.url) {
         case '/html':
-            promiseReadFile('./index.html')
+            promiseReadFile('public/index.html')
                 .then((data) => {
                     res.writeHead(200, {
                         'Content-Type': 'text/html'
