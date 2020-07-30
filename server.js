@@ -79,6 +79,7 @@ const server = http.createServer((req, res) => {
 
         case 'delay':
             setTimeout(() => {
+                res.writeHead(200);
                 res.write(`Page delayed by ${urlInParts[2]} Seconds`);
                 res.end();
             }, urlInParts[2] * 1000);
