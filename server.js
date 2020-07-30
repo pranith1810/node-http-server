@@ -17,6 +17,7 @@ const promiseReadFile = (filename) => {
 
 const server = http.createServer((req, res) => {
     let urlInParts = req.url.split('/');
+
     switch (urlInParts[1]) {
         case 'html':
             promiseReadFile('public/index.html')
@@ -62,7 +63,7 @@ const server = http.createServer((req, res) => {
             let flag = 0;
             for (code in http.STATUS_CODES) {
                 if (code === urlInParts[2]) {
-                    res.writeHead(Number(code));
+                    res.writeHead(code);
                     res.write(http.STATUS_CODES[code]);
                     res.end();
                     flag = 1;
@@ -74,6 +75,13 @@ const server = http.createServer((req, res) => {
                 res.write('404 File Not Found!!');
                 res.end();
             }
+            break;
+
+        case 'delay':
+            setTimeout(() => {
+                res.write(`Page delayed by ${urlInParts[2]} Seconds`);
+                res.end();
+            }, urlInParts[2] * 1000);
             break;
 
         default:
