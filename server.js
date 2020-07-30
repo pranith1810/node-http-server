@@ -30,6 +30,20 @@ const server = http.createServer((req, res) => {
                 });
             break;
 
+        case '/json':
+            promiseReadFile('data/data.json')
+                .then((data) => {
+                    res.writeHead(200, {
+                        'Content-Type': 'application/json'
+                    });
+                    res.write(data);
+                    res.end();
+                })
+                .catch((err) => {
+                    console.error('Error while reading the data.json file ' + err);
+                });
+            break;
+
         default:
             res.writeHead(404);
             res.write('404 File Not Found!!');
