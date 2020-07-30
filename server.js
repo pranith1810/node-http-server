@@ -16,8 +16,9 @@ const promiseReadFile = (filename) => {
 };
 
 const server = http.createServer((req, res) => {
-    switch (req.url) {
-        case '/html':
+    let urlInParts = req.url.split('/');
+    switch (urlInParts[1]) {
+        case 'html':
             promiseReadFile('public/index.html')
                 .then((data) => {
                     res.writeHead(200, {
@@ -31,7 +32,7 @@ const server = http.createServer((req, res) => {
                 });
             break;
 
-        case '/json':
+        case 'json':
             promiseReadFile('data/data.json')
                 .then((data) => {
                     res.writeHead(200, {
@@ -45,7 +46,7 @@ const server = http.createServer((req, res) => {
                 });
             break;
 
-        case '/uuid':
+        case 'uuid':
             let id = uuid();
             let idObj = {
                 'uuid': id
@@ -55,6 +56,24 @@ const server = http.createServer((req, res) => {
             });
             res.write(JSON.stringify(idObj, null, 4));
             res.end();
+            break;
+
+        case 'status':
+            let flag = 0;
+            for (code in http.STATUS_CODES) {
+                if (code === urlInParts[2]) {
+                    res.writeHead(Number(code));
+                    res.write(http.STATUS_CODES[code]);
+                    res.end();
+                    flag = 1;
+                    break;
+                }
+            }
+            if (flag === 0) {
+                res.writeHead(404);
+                res.write('404 File Not Found!!');
+                res.end();
+            }
             break;
 
         default:
