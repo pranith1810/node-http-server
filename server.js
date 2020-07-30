@@ -1,5 +1,6 @@
 const http = require('http');
 const fs = require('fs');
+const uuid = require('uuid4');
 
 const promiseReadFile = (filename) => {
     return new Promise((resolve, reject) => {
@@ -42,6 +43,18 @@ const server = http.createServer((req, res) => {
                 .catch((err) => {
                     console.error('Error while reading the data.json file ' + err);
                 });
+            break;
+
+        case '/uuid':
+            let id = uuid();
+            let idObj = {
+                'uuid': id
+            }
+            res.writeHead(200, {
+                'Content-Type': 'application/json'
+            });
+            res.write(JSON.stringify(idObj, null, 4));
+            res.end();
             break;
 
         default:
