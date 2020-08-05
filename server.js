@@ -45,6 +45,8 @@ const server = http.createServer((req, res) => {
                     res.end();
                 })
                 .catch((err) => {
+                    res.writeHead(500);
+                    res.end();
                     console.error('Error while reading the data.json file ' + err);
                 });
             break;
