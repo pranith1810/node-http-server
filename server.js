@@ -89,18 +89,24 @@ const server = http.createServer((req, res) => {
                     res.end();
                 }
             }
-            catch(err){
+            catch (err) {
                 res.writeHead(500);
                 res.end();
             }
             break;
 
         case 'delay':
-            setTimeout(() => {
-                res.writeHead(200);
-                res.write(`Page delayed by ${urlInParts[2]} Seconds`);
+            try {
+                setTimeout(() => {
+                    res.writeHead(200);
+                    res.write(`Page delayed by ${urlInParts[2]} Seconds`);
+                    res.end();
+                }, urlInParts[2] * 1000);
+            }
+            catch (err) {
+                res.writeHead(500);
                 res.end();
-            }, urlInParts[2] * 1000);
+            }
             break;
 
         default:
