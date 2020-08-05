@@ -29,6 +29,8 @@ const server = http.createServer((req, res) => {
                     res.end();
                 })
                 .catch((err) => {
+                    res.writeHead(500);
+                    res.end();
                     console.error('Error while reading the index.html file ' + err);
                 });
             break;
@@ -87,7 +89,6 @@ const server = http.createServer((req, res) => {
 
         default:
             res.writeHead(404);
-            res.write('404 File Not Found!!');
             res.end();
     }
 });
