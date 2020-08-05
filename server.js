@@ -52,9 +52,18 @@ const server = http.createServer((req, res) => {
             break;
 
         case 'uuid':
-            let id = uuid();
-            let idObj = {
-                'uuid': id
+            let idObj = null;
+            try {
+                let id = uuid();
+                idObj = {
+                    'uuid': id
+                }
+            }
+            catch (err) {
+                res.writeHead(500);
+                res.end();
+                console.error('Error while generating uuid key ' + err);
+                break;
             }
             res.writeHead(200, {
                 'Content-Type': 'application/json'
@@ -64,20 +73,21 @@ const server = http.createServer((req, res) => {
             break;
 
         case 'status':
-            let flag = 0;
-            for (code in http.STATUS_CODES) {
-                if (code === urlInParts[2]) {
-                    res.writeHead(code);
-                    res.write(http.STATUS_CODES[code]);
-                    res.end();
-                    flag = 1;
-                    break;
+            try {
+                let flag = 0;
+                for (code in http.STATUS_CODES) {
+                    if (code === urlInParts[2]) {
+                        res.writeHead(code);
+                        res.write(http.STATUS_CODES[code]);
+                        res.end();
+                        flag = 1;
+                        break;
+                    }
                 }
-            }
-            if (flag === 0) {
-                res.writeHead(404);
-                res.write('404 File Not Found!!');
-                res.end();
+                if (flag === 0) {
+                    res.writeHead(404);
+                    res.end();
+                }
             }
             break;
 
