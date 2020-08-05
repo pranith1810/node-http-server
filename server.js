@@ -89,6 +89,10 @@ const server = http.createServer((req, res) => {
                     res.end();
                 }
             }
+            catch(err){
+                res.writeHead(500);
+                res.end();
+            }
             break;
 
         case 'delay':
